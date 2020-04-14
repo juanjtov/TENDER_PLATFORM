@@ -1,4 +1,5 @@
 #-*- coding: utf-8 -*-
+import csv
 
 class Empresas:
 
@@ -19,6 +20,7 @@ class TenderPlat:
         empresa = Empresas(name, phone, email, city) #Instancia de la clase Empresas
 
         self._companies.append(empresa)    
+        self._save()
 
         print('Su empresa ha sido agregada exitosamente')
 
@@ -34,11 +36,36 @@ class TenderPlat:
         print('Email: {}'.format(empresa._email))
         print('Ciudad de la licitación: {}'.format(empresa._city))
 
+    
+    #Creo esa función para almacenar los datos en disco duro
+    #Así no se borran cada vez que ejecuto el archivo
+    #Sin embargo acá solo escribo sobre el archivo
+    def _save(self):
+        with open('companies.csv', 'w') as f:
+            writer = csv.writer(f)
+            writer.writerow( ('name', 'phone', 'email', 'city'))
 
+            for comp in self._companies:
+                writer.writerow((comp._name, comp._phone, comp._email, comp._city))
+
+        
 
 def run():
 
     tender_plat = TenderPlat()
+
+
+    #A través de la siguiente instrucción leo el archivo  e inmediatamente
+    #me quedan listos para usarlos
+    with open('companies.csv', 'r') as f:
+        reader = csv.reader(f)
+        for idx, row in enumerate(reader):
+            #Voy excluir la primera fila que es donde está el encabezado
+            if idx == 0:
+                continue
+            else:
+                tender_plat.add(row[0], row[1], row[2], row[3])
+
     while True:
         command = str(input('''
             ¿Qué deseas hacer?
@@ -59,7 +86,7 @@ def run():
             tender_plat.add(name, phone, email, city)
 
         elif command == 'l':
-            print('voy a licitar')
+            print('Mostrando Procesos')
 
         elif command == 'lis':
             print('Estas son las empresas existentes')
