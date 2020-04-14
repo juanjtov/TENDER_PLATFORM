@@ -48,6 +48,10 @@ class TenderPlat:
         for empresa in self._companies:
             self._print_companies(empresa)
 
+    def show_process(self):
+        for proceso in self._process:
+            self._print_procesos(proceso)
+
     #Este método es privado porque solo lo voy a llamar dentro de la clase
     def _print_companies(self, empresa):
         print('*********************************')
@@ -55,6 +59,16 @@ class TenderPlat:
         print('Télefono: {}'.format(empresa._phone))
         print('Email: {}'.format(empresa._email))
         print('Ciudad de la licitación: {}'.format(empresa._city))
+
+    def _print_procesos(self, proceso):
+        print('*********************************')
+        print('Nombre del proceso: {}'.format(proceso._proc_name))
+        print('Télefono: {}'.format(proceso._categoria))
+        print('Email: {}'.format(proceso._ciudad))
+        print('Ciudad de la licitación: {}'.format(proceso._descripcion))
+
+
+
 
     
     #Creo esa función para almacenar los datos en disco duro
@@ -92,7 +106,8 @@ def run():
 
             [m]ontar licitación
             [l]icitar
-            [lis]tar empresas existentes
+            [lise]Listar empresas existentes
+            [lispro]Listar procesos existentes
             [s]alir
         ''')).lower()
 
@@ -129,10 +144,12 @@ def run():
                 
                 
 
-        elif command == 'l':
-            print('Mostrando Procesos')
+        elif command == 'lispro':
+            print('Mostrando Procesos Existentes')
+            tender_plat.show_process()
 
-        elif command == 'lis':
+
+        elif command == 'lise':
             print('Estas son las empresas existentes')
             tender_plat.show_comp()
 
