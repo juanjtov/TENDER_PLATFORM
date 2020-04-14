@@ -10,10 +10,20 @@ class Empresas:
         self._email = email
         self._city = city
 
+class Processes:
+
+    def __init__(self, proc_name, categoria, ciudad, descripcion):
+
+        self._proc_name = proc_name
+        self._categoria = categoria
+        self._ciudad = ciudad
+        self._descripcion = descripcion
+
 class TenderPlat:
 
     def __init__(self):
         self._companies = []
+        self._process = []
         
     def add(self, name, phone, email, city): #Método para crear empresas
 
@@ -23,6 +33,16 @@ class TenderPlat:
         self._save()
 
         print('Su empresa ha sido agregada exitosamente')
+
+    def add_process(self, proc_name, categoria, ciudad, descripcion):
+
+        proceso = Processes(proc_name, categoria, ciudad, descripcion)
+
+        self._process.append(proceso)
+
+        print('Se agrego proceso')
+        
+
 
     def show_comp(self):
         for empresa in self._companies:
@@ -81,9 +101,33 @@ def run():
             name = str(input('Ingrese el nombre de la empresa: '))
             phone = str(input('Ingrese número de télefono de la empresa: '))
             email = str(input('Ingrese email de la empresa: '))
-            city = str(input('Ciudad donde requiere el servicio de licitación: '))
+            city = str(input('Ciudad donde está ubicada la empresa: '))
 
             tender_plat.add(name, phone, email, city)
+
+            process = str(input('''
+                ¿Desea adicionar proceso de licitación?
+
+                [s]i
+                [n]o
+            ''')).lower()
+
+            if process == 's':
+                proc_name = str(input('Nombre del proceso de licitación: '))
+                categoria = str(input('Categoria del proceso de licitación: '))
+                ciudad = str(input('Ciudad donde se requiere el producto o serivicio: '))
+                descripcion = str(input('Actividad a realizar: '))
+
+                tender_plat.add_process(proc_name, categoria, ciudad, descripcion)
+
+            elif process == 'n':
+                print('No se agrego ningún proceso ha esta empresa')
+
+            else:
+                print('Comando no encontrado')
+
+                
+                
 
         elif command == 'l':
             print('Mostrando Procesos')
