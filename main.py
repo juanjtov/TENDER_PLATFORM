@@ -39,6 +39,7 @@ class TenderPlat:
         proceso = Processes(proc_name, categoria, ciudad, descripcion)
 
         self._process.append(proceso)
+        self._save_process()
 
         print('Se agrego proceso')
         
@@ -67,9 +68,6 @@ class TenderPlat:
         print('Email: {}'.format(proceso._ciudad))
         print('Ciudad de la licitación: {}'.format(proceso._descripcion))
 
-
-
-
     
     #Creo esa función para almacenar los datos en disco duro
     #Así no se borran cada vez que ejecuto el archivo
@@ -82,6 +80,16 @@ class TenderPlat:
             for comp in self._companies:
                 writer.writerow((comp._name, comp._phone, comp._email, comp._city))
 
+    def _save_process(self):
+
+        #En el mismo método voy a agregar los procesos en disco
+        with open('process.csv', 'w') as f:
+            writer_p = csv.writer(f)
+            writer_p.writerow(('Process name', 'Category', 'City', 'Description'))
+            #¿Creo un directorio con compañias y procesos?
+            
+            for proc in self._process:
+                writer_p.writerow((proc._proc_name, proc._categoria, proc._ciudad, proc._descripcion))
         
 
 def run():
@@ -99,6 +107,16 @@ def run():
                 continue
             else:
                 tender_plat.add(row[0], row[1], row[2], row[3])
+
+    with open('process.csv', 'r') as f:
+        reader_p = csv.reader(f)
+        for idx, row in enumerate(reader_p):
+            #Voy excluir la primera fila que es donde está el encabezado
+            if idx == 0:
+                continue
+            else:
+                tender_plat.add_process(row[0], row[1], row[2], row[3])
+
 
     while True:
         command = str(input('''
