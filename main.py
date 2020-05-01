@@ -1,4 +1,6 @@
 #-*- coding: utf-8 -*-
+
+#Importo csv para poder almacenar los archivos en disco (coma separate values) de esta forma leo, actualizo y grabo sobre esos archivos
 import csv
 
 class Empresas:
@@ -43,8 +45,6 @@ class TenderPlat:
 
         print('Se agrego proceso')
         
-
-
     def show_comp(self):
         for empresa in self._companies:
             self._print_companies(empresa)
@@ -53,10 +53,53 @@ class TenderPlat:
         for proceso in self._process:
             self._print_procesos(proceso)
 
+    def update(self, name):
+        
+        flag = 0
+        for comp in self._companies:
+            if comp._name.lower() == name.lower():
+                flag =  flag + 1
+                self._print_companies(comp)
+                print('Elige las opciones: nombre, telefono, email o ciudad')
+                act = str(input('Escribe el dato de la empresa que deseas actualizar: '))
+                if act.lower() == 'nombre':
+                    new = str(input('Nuevo nombre: '))
+                    comp._name = new
+                    self._print_companies(comp)
+                    print('Proceso de actualización exitoso')
+                elif act.lower() == 'telefono':
+                    new = str(input('Nuevo telefono: '))
+                    comp._phone = new
+                    self._print_companies(comp)
+                    print('Proceso de actualización exitoso')
+                elif act.lower() == 'email':
+                    new = str(input('Nuevo email: '))
+                    comp._email = new
+                    self._print_companies(comp)
+                    print('Proceso de actualización exitoso')
+
+                elif act.lower() == 'ciudad':
+                    new = str(input('Nueva ciudad: '))
+                    comp._city = new
+                    self._print_companies(comp)
+                    print('Proceso de actualización exitoso')
+    
+                else:
+                    print('EL ATRIBUTO QUE DESEAS CAMBIAR NO EXISTE')
+                    break
+        
+        
+        if flag == 0 :
+            print('La compañía no esta creada en el sistema')
+        
+        else:
+            self._save()
+
+
     #Este método es privado porque solo lo voy a llamar dentro de la clase
     def _print_companies(self, empresa):
         print('*********************************')
-        print('Nomre de la compañía: {}'.format(empresa._name))
+        print('Nombre de la compañía: {}'.format(empresa._name))
         print('Télefono: {}'.format(empresa._phone))
         print('Email: {}'.format(empresa._email))
         print('Ciudad de la licitación: {}'.format(empresa._city))
@@ -122,6 +165,7 @@ def run():
         command = str(input('''
             ¿Qué deseas hacer?
 
+            [ac]tualizar proceso
             [m]ontar licitación
             [l]icitar
             [lise]Listar empresas existentes
@@ -161,6 +205,13 @@ def run():
 
                 
                 
+        elif command == 'ac':
+            print('MÓDULO PARA ACTUALIZAR PROCESOS')
+            
+            name = str(input('Escribe el nombre de la empresa que tiene el proceso: '))
+
+            tender_plat.update(name)
+
 
         elif command == 'lispro':
             print('Mostrando Procesos Existentes')
