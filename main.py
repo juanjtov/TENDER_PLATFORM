@@ -14,8 +14,8 @@ class Empresas:
 
 class Processes:
 
-    def __init__(self, proc_name, categoria, ciudad, descripcion):
-
+    def __init__(self, name, proc_name, categoria, ciudad, descripcion):
+        self._namec = name
         self._proc_name = proc_name
         self._categoria = categoria
         self._ciudad = ciudad
@@ -36,9 +36,9 @@ class TenderPlat:
 
         print('Su empresa ha sido agregada exitosamente')
 
-    def add_process(self, proc_name, categoria, ciudad, descripcion):
+    def add_process(self, name, proc_name, categoria, ciudad, descripcion):
 
-        proceso = Processes(proc_name, categoria, ciudad, descripcion)
+        proceso = Processes(name, proc_name, categoria, ciudad, descripcion)
 
         self._process.append(proceso)
         self._save_process()
@@ -106,6 +106,7 @@ class TenderPlat:
 
     def _print_procesos(self, proceso):
         print('*********************************')
+        print('Compañía Licitadora: {}'.format(proceso._namec))
         print('Nombre del proceso: {}'.format(proceso._proc_name))
         print('Télefono: {}'.format(proceso._categoria))
         print('Email: {}'.format(proceso._ciudad))
@@ -128,11 +129,11 @@ class TenderPlat:
         #En el mismo método voy a agregar los procesos en disco
         with open('process.csv', 'w') as f:
             writer_p = csv.writer(f)
-            writer_p.writerow(('Process name', 'Category', 'City', 'Description'))
+            writer_p.writerow(('Company name','Process name', 'Category', 'City', 'Description'))
             #¿Creo un directorio con compañias y procesos?
             
             for proc in self._process:
-                writer_p.writerow((proc._proc_name, proc._categoria, proc._ciudad, proc._descripcion))
+                writer_p.writerow((proc._namec, proc._proc_name, proc._categoria, proc._ciudad, proc._descripcion))
         
 
 def run():
@@ -158,7 +159,7 @@ def run():
             if idx == 0:
                 continue
             else:
-                tender_plat.add_process(row[0], row[1], row[2], row[3])
+                tender_plat.add_process(row[0], row[1], row[2], row[3], row[4])
 
 
     while True:
@@ -195,7 +196,7 @@ def run():
                 ciudad = str(input('Ciudad donde se requiere el producto o serivicio: '))
                 descripcion = str(input('Actividad a realizar: '))
 
-                tender_plat.add_process(proc_name, categoria, ciudad, descripcion)
+                tender_plat.add_process(name, proc_name, categoria, ciudad, descripcion)
 
             elif process == 'n':
                 print('No se agrego ningún proceso ha esta empresa')
